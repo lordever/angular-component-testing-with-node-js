@@ -27,10 +27,14 @@ This application has a service ([test-service-service](./src/app/test-service.se
 ![Test succesful](./docs/test-sucessfully.png)
 
 
-# Stub server configuration
+# Stub server configuration for test start
 In order for [the stub server](./stub-server/index.js) to work during the test run, add access control origins to headers:
 
 ```js
 res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200'); //angular application host
 res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9876'); //karma host
 ```
+# Known mistake
+
+* The service is initially configured for requests to the stub server. You can’t do this for the correct configuration of the service and tests; you need to use another http service, the url of which will be sent to the stub server.
+* There is no possibility of starting the stub server and tests with one npm command
