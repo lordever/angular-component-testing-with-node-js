@@ -1,4 +1,4 @@
-# Angular Component testing with node js
+# Unit testing Angular app with node.js, karma, jasmine
 This is an example of component testing of an angular application (7.0.0) using node js as mocking of the backend.
 
 # Introduction
@@ -25,3 +25,12 @@ This application has a service ([test-service-service](./src/app/test-service.se
   
 [The test file](./src/app/test-service.service.spec.ts) runs tests for these 2 methods. Since **the stub server is turned on before running the tests**, during the method check, the test passes successfully:
 ![Test succesful](./docs/test-sucessfully.png)
+
+
+# Stub server configuration
+In order for [the stub server](./stub-server/index.js) to work during the test run, add access control origins to headers:
+
+```js
+res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200'); //angular application host
+res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9876'); //karma host
+```
