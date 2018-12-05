@@ -23,5 +23,5 @@ This application has a service ([test-service-service](./src/app/test-service.se
 * getMessage(): string - return static text
 * getConfiguration(): Observable<ConfiguratoinModel> - makes http request to stub server for configuration and gets json
   
-The test file runs tests for these 2 methods. Since **the stub server is turned on before running the tests**, during the method check, the test passes successfully:
+[The test file](./src/app/test-service.service.spec.ts) runs tests for these 2 methods. Since **the stub server is turned on before running the tests**, during the method check, the test passes successfully:
 ![Test succesful](./docs/test-sucessfully.png)
