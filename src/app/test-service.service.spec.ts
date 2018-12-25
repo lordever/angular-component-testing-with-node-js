@@ -1,39 +1,37 @@
-import { TestBed, async } from '@angular/core/testing';
-import { TestServiceService } from './test-service.service';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { APIInterceptor } from './apiInterseptor.service';
+import {async} from "@angular/core/testing";
+import {TestServiceService} from "./test-service.service";
+import {of} from "rxjs/internal/observable/of";
 
 describe('TestServiceService', () => {
+  let cookieServiceSpy: any;
+  let httpClientSpy: any;
+  let testedService: TestServiceService;
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule
-      ],
-      providers: [
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: APIInterceptor,
-          multi: true,
-        }
-      ],
-    }).compileComponents();
+    cookieServiceSpy = jasmine.createSpyObj("CookieService", ['set', 'get']);
+    httpClientSpy = jasmine.createSpyObj("HttpClient", ['get']);
+    testedService = new TestServiceService(httpClientSpy, cookieServiceSpy);
   }));
 
   it('should be created', () => {
-    const service: TestServiceService = TestBed.get(TestServiceService);
-    expect(service).toBeTruthy();
+    expect(testedService).toBeTruthy();
   });
 
   it('should return message', () => {
-    const service: TestServiceService = TestBed.get(TestServiceService);
-    expect(service.getMessage()).toEqual('Test message');
-  }); 
+    expect(testedService.getMessage()).toEqual('Test message');
+  });
 
   it('should return configuration', (done: DoneFn) => {
-    const service: TestServiceService = TestBed.get(TestServiceService);
-    service.getConfiguration().subscribe((conf) => {
+    httpClientSpy.get.and.returnValue(of({
+      name: 'testConfiguration'
+    }));
+    testedService.getConfiguration().subscribe((conf) => {
       expect(conf.name).toEqual('testConfiguration');
       done();
     });
+  });
+
+  it('should save cookie', () => {
+    cookieServiceSpy.get.and.returnValue('testValue');
+    expect(testedService.getTestCookie()).toBeTruthy();
   });
 });

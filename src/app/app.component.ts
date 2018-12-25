@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TestServiceService } from './test-service.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,14 @@ export class AppComponent implements OnInit {
   title = 'testProject';
   public _message: string;
 
-  constructor(private testService: TestServiceService) {
+  constructor(private testService: TestServiceService, private cookieService: CookieService) {
   }
 
   ngOnInit() {
     this._message = this.testService.getMessage();
     this.testService.getConfiguration().subscribe((data) => {
-      console.log(data);
+      this.cookieService.set('test', 'testValue');
+      console.log('DATA', data);
     });
   }
 }
